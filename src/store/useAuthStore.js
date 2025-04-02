@@ -3,7 +3,10 @@ import { io } from "socket.io-client";
 import { create } from "zustand";
 import { axiosInstance } from "./../lib/axios.js";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL =
+  window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://chat-app-backend-chi-teal.vercel.app";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -46,7 +49,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isLogging: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data });
+      set({ authUser: res?.data });
       toast.success("Logged in successfully");
       get().connectSocket();
     } catch (error) {
