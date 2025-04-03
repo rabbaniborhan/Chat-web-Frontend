@@ -5,28 +5,52 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "buildCommand": "vite build --mode production",
+        "outputDirectory": "dist"
       }
     }
   ],
   "routes": [
     {
+      "src": "/assets/(.*)",
+      "headers": {
+        "Content-Type": {
+          ".js": "text/javascript",
+          ".css": "text/css",
+          ".json": "application/json"
+        }
+      }
+    },
+
+    {
       "src": "/socket.io/(.*)",
       "dest": "https://chat-app-backend-chi-teal.vercel.app/socket.io/$1",
       "headers": {
         "Access-Control-Allow-Origin": "https://chat-web-chi.vercel.app",
-        "Access-Control-Allow-Credentials": "true"
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS"
       }
     },
 
     {
       "src": "/api/(.*)",
-      "dest": "https://chat-app-backend-chi-teal.vercel.app/api/$1"
+      "dest": "https://chat-app-backend-chi-teal.vercel.app/api/$1",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://chat-web-chi.vercel.app"
+      }
     },
 
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/index.html",
+      "headers": {
+        "Content-Type": "text/html",
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
     }
-  ]
+  ],
+  "env": {
+    "VITE_BACKEND_URL": "https://chat-app-backend-chi-teal.vercel.app"
+  }
 }
