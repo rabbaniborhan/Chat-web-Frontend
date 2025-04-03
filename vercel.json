@@ -2,37 +2,32 @@
   "version": 2,
   "builds": [
     {
-      "src": "package.json",
+      "src": "vite.config.js",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist"
+        "distDir": "dist",
+        "cleanUrls": true
       }
     }
   ],
   "routes": [
     {
       "src": "/socket.io/(.*)",
-      "dest": "https://chat-app-backend-chi-teal.vercel.app",
+      "dest": "https://chat-app-backend-chi-teal.vercel.app/socket.io/$1",
       "headers": {
         "Access-Control-Allow-Origin": "https://chat-web-chi.vercel.app",
-        "Access-Control-Allow-Credentials": "true"
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS"
       }
     },
-
     {
       "src": "/api/(.*)",
-      "dest": "https://chat-app-backend-chi-teal.vercel.app"
+      "dest": "https://chat-app-backend-chi-teal.vercel.app/api/$1"
     },
     {
       "src": "/(.*)",
       "dest": "/index.html",
       "continue": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ],
   "env": {
