@@ -1,0 +1,41 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/socket.io/(.*)",
+      "dest": "https://chat-app-backend-chi-teal.vercel.app",
+      "headers": {
+        "Access-Control-Allow-Origin": "https://chat-web-chi.vercel.app",
+        "Access-Control-Allow-Credentials": "true"
+      }
+    },
+
+    {
+      "src": "/api/(.*)",
+      "dest": "https://chat-app-backend-chi-teal.vercel.app"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "continue": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "VITE_BACKEND_URL": "https://chat-app-backend-chi-teal.vercel.app"
+  }
+}

@@ -39,7 +39,7 @@ const Sidebar = () => {
           </label>
           <span className="text-xs text-zinc-500 ">
             {" "}
-            ({onlineUser.length - 1} online)
+            ({onlineUser?.length - 1} online)
           </span>
         </div>
       </div>
