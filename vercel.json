@@ -23,6 +23,12 @@
       "dest": "https://chat-app-backend-chi-teal.vercel.app/api/$1"
     },
     {
+      "src": "/(.*\\.css)",
+      "headers": {
+        "Content-Type": "text/css"
+      }
+    },
+    {
       "src": "/(.*\\.js)",
       "headers": {
         "Content-Type": "application/javascript"
