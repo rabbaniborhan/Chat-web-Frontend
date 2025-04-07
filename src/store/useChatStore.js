@@ -51,9 +51,21 @@ export const useChatStore = create((set, get) => ({
   subscribeToMessages: () => {
     const { selectedUser } = get();
     if (!selectedUser) return;
+
     const socket = useAuthStore.getState().socket;
+
+    const notificationSound = new Audio("/notification.mp3");
+
     socket.on("newMessage", (newMessage) => {
       if (newMessage.senderId !== selectedUser._id) return;
+
+      // Only play sound if app is not in focus
+      if (document.visibilityState !== "visible") {
+        notificationSound.play().catch((err) => {
+          console.log("Sound play error:", err);
+        });
+      }
+
       set((state) => ({
         messages: Array.isArray(state.messages)
           ? [...state.messages, newMessage]
