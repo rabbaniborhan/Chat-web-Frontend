@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 import { create } from "zustand";
 import { axiosInstance } from "./../lib/axios.js";
 
-const BASE_URL = "https://chat-app-backend-9l9x.onrender.com";
+const BASE_URL = "https://chat-app-backend-9l9x.onrender.com/";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -16,14 +16,16 @@ export const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     try {
-      const res = await axiosInstance.get("/auth/check", {
-        withCredentials: true,
-      });
+      set({ isCheckingAuth: true });
+      const res = await axiosInstance.get("/auth/check");
       set({ authUser: res?.data });
       get().connectSocket();
     } catch (error) {
       set({ authUser: null });
-      console.log(error);
+      console.log(
+        "Auth check failed:",
+        error.response?.data?.message || error.message
+      );
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -33,7 +35,11 @@ export const useAuthStore = create((set, get) => ({
     set({ isSignUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
+      const token = res?.data?.token;
+      if (token) {
+        localStorage.setItem("jwt", token);
+      }
+      set({ authUser: res.data?.user });
       toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
@@ -48,7 +54,11 @@ export const useAuthStore = create((set, get) => ({
     set({ isLogging: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res?.data });
+      const token = res?.data?.token;
+      if (token) {
+        localStorage.setItem("jwt", token);
+      }
+      set({ authUser: res?.data?.user });
       toast.success("Logged in successfully");
       get().connectSocket();
     } catch (error) {
@@ -60,7 +70,9 @@ export const useAuthStore = create((set, get) => ({
 
   logout: async () => {
     try {
+      localStorage.removeItem("jwt");
       await axiosInstance.post("/auth/logout");
+
       set({ authUser: null });
       toast.success("Logged out successfully");
       get().disconnectSocket();
