@@ -12,7 +12,7 @@
   "routes": [
     {
       "src": "/socket.io/(.*)",
-      "dest": "https://chat-app-backend-chi-teal.vercel.app/socket.io/$1",
+      "dest": "https://chat-app-backend-9l9x.onrender.com/socket.io/$1",
       "headers": {
         "Access-Control-Allow-Origin": "https://chat-web-chi.vercel.app",
         "Access-Control-Allow-Credentials": "true"
@@ -20,7 +20,13 @@
     },
     {
       "src": "/api/(.*)",
-      "dest": "https://chat-app-backend-chi-teal.vercel.app/api/$1"
+      "dest": "https://chat-app-backend-9l9x.onrender.com/api/$1"
+    },
+    {
+      "src": "/(.*\\.js)",
+      "headers": {
+        "Content-Type": "application/javascript"
+      }
     },
     {
       "src": "/(.*\\.css)",
@@ -29,9 +35,27 @@
       }
     },
     {
-      "src": "/(.*\\.js)",
+      "src": "/(.*\\.png)",
       "headers": {
-        "Content-Type": "application/javascript"
+        "Content-Type": "image/png"
+      }
+    },
+    {
+      "src": "/(.*\\.jpg)",
+      "headers": {
+        "Content-Type": "image/jpeg"
+      }
+    },
+    {
+      "src": "/(.*\\.svg)",
+      "headers": {
+        "Content-Type": "image/svg+xml"
+      }
+    },
+    {
+      "src": "/(.*\\.ico)",
+      "headers": {
+        "Content-Type": "image/x-icon"
       }
     },
     {

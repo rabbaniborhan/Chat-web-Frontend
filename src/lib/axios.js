@@ -1,9 +1,6 @@
 import axios from "axios";
 
-const baseURL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5000/api"
-    : "https://chat-app-backend-chi-teal.vercel.app/api";
+const baseURL = "https://chat-app-backend-9l9x.onrender.com/api";
 export const axiosInstance = axios.create({
   baseURL,
   withCredentials: true,
